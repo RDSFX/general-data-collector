@@ -1,0 +1,43 @@
+# 示例配置：浏览器内 API 请求
+
+# 任务名称（必填）
+name = "example_browser_api"
+
+# 模板名称（必填）
+template = "browser_api"
+
+# 超时配置（可选）
+[timeouts]
+navigation_seconds = 10    # 页面导航超时
+operation_seconds = 30     # 脚本执行超时
+
+# 浏览器配置（必填）
+[browser]
+url = "https://httpbin.org/html"  # 导航到的目标页面
+wait_for_login = false     # 是否等待人工登录（true/false）
+script = "scripts/example_request.js"  # JavaScript 脚本路径（相对项目根目录）
+
+# JavaScript 脚本示例（scripts/example_request.js）：
+# (async () => {
+#   // 使用 window.request 发送请求
+#   const result = await window.request('https://httpbin.org/json', {
+#     method: 'GET',
+#     headers: { 'Accept': 'application/json' },
+#     timeout: 10000
+#   });
+#
+#   // 返回 JSON 对象
+#   return result.data;
+# })();
+
+# 使用说明：
+# 1. 启动浏览器：.\start-browser.bat
+# 2. 创建 JavaScript 脚本（见上方示例）
+# 3. 单次执行：python executor.py config/tasks/example_browser_api.toml
+# 4. 定时调度：python timer.py config/tasks/example_browser_api.toml
+# 5. 脚本必须返回 JSON 对象，不能返回数组或基本类型
+
+# 注意事项：
+# - window.request 函数由 scripts/request.js 提供，自动注入
+# - 脚本执行在页面上下文中，可访问页面 DOM 和全局变量
+# - 超时由 operation_seconds 控制

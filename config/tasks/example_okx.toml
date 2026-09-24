@@ -1,0 +1,54 @@
+# 示例配置：OKX API 签名认证
+
+# 任务名称（必填）
+name = "example_okx"
+
+# 模板名称（必填）
+template = "okx_api"
+
+# 超时配置（可选）
+[timeouts]
+http_seconds = 10
+
+# 认证配置（必填）
+# 从环境变量读取 API 凭据，不要直接写在配置文件中
+[auth]
+api_key_env = "OKX_API_KEY"
+secret_key_env = "OKX_SECRET_KEY"
+passphrase_env = "OKX_PASSPHRASE"
+
+# 请求配置（必填）
+[request]
+method = "GET"
+base_url = "https://www.okx.com"
+path = "/api/v5/account/balance"  # 查询账户余额（只读操作）
+
+# 查询参数（可选）
+# [request.params]
+# ccy = "BTC"
+
+# 请求头（可选，OKX 专用头会自动添加）
+# [request.headers]
+# Content-Type = "application/json"
+
+# JSON 请求体（可选，仅 POST 等方法）
+# [request.json]
+# instId = "BTC-USDT"
+# tdMode = "cash"
+
+# 环境变量设置（使用前必须设置）：
+# PowerShell:
+#   $env:OKX_API_KEY="your_api_key"
+#   $env:OKX_SECRET_KEY="your_secret_key"
+#   $env:OKX_PASSPHRASE="your_passphrase"
+#
+# Linux:
+#   export OKX_API_KEY="your_api_key"
+#   export OKX_SECRET_KEY="your_secret_key"
+#   export OKX_PASSPHRASE="your_passphrase"
+
+# 使用说明：
+# 1. 设置环境变量（见上方）
+# 2. 单次执行：python executor.py config/tasks/example_okx.toml
+# 3. 定时调度：python timer.py config/tasks/example_okx.toml
+# 4. 注意：仅用于只读接口，不要执行交易操作

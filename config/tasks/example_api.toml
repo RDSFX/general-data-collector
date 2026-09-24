@@ -1,0 +1,44 @@
+# 示例配置：普通 API 请求
+
+# 任务名称（必填）
+# 只能包含字母、数字、下划线和连字符
+name = "example_api"
+
+# 模板名称（必填）
+# 可选值：api_request, okx_api, browser_api, browser_page
+template = "api_request"
+
+# 超时配置（可选，单位：秒）
+[timeouts]
+http_seconds = 10          # HTTP 请求超时（默认 10 秒）
+
+# 请求配置（必填）
+[request]
+method = "GET"             # HTTP 方法：GET, POST, PUT, DELETE 等
+base_url = "https://httpbin.org"  # 基础 URL
+path = "/json"             # 请求路径
+
+# 查询参数（可选）
+# [request.params]
+# key1 = "value1"
+# key2 = "value2"
+
+# 请求头（可选）
+[request.headers]
+Accept = "application/json"
+# Authorization = "Bearer YOUR_TOKEN"
+# User-Agent = "data-collector/1.0"
+
+# JSON 请求体（可选，与 body 互斥）
+# [request.json]
+# key = "value"
+# number = 123
+
+# 文本请求体（可选，与 json 互斥）
+# body = "raw text content"
+
+# 使用说明：
+# 1. 单次执行：python executor.py config/tasks/example_api.toml
+# 2. 定时调度：python timer.py config/tasks/example_api.toml
+# 3. 结果保存在：data/example_api/<日期>.jsonl
+# 4. 日志保存在：logs/example_api/<日期>.log

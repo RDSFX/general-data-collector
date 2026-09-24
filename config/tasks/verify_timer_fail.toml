@@ -1,0 +1,10 @@
+name = "verify_timer_fail"
+template = "api_request"
+
+[timeouts]
+http_seconds = 5
+
+[request]
+method = "GET"
+base_url = "https://nonexistent-domain-12345.com"
+path = "/test"

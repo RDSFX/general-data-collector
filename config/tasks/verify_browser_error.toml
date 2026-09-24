@@ -1,0 +1,17 @@
+name = "verify_browser_error"
+template = "browser_page"
+
+[timeouts]
+navigation_seconds = 10
+operation_seconds = 10
+
+[browser]
+url = "https://example.com"
+wait_for_login = false
+
+[[fields]]
+name = "nonexistent"
+xpath = "//div[@id='nonexistent-element']"
+read = "text"
+multiple = false
+type = "string"

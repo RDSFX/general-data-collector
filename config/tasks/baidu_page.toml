@@ -1,0 +1,37 @@
+name = "baidu_hot_search"
+template = "browser_page"
+
+
+[schedule]
+interval_seconds = 10
+jitter_percent = 20  # 可选：基准间隔 ±20% 随机抖动
+max_rounds = 2      # 可选：采集 2 轮后自动停止
+
+
+[timeouts]
+navigation_seconds = 10
+operation_seconds = 10
+
+[browser]
+url = "https://baidu.com"
+wait_for_login = false
+
+
+[[actions]]
+type = "refresh"
+
+
+[[fields]]
+name = "link"
+xpath = "//ul[@class='s-hotsearch-content']/li/a"
+read = "attribute:href"
+multiple = true
+type = "string"
+
+
+[[fields]]
+name = "content"
+xpath = "//span[@class='title-content-title']"
+read = "text"
+multiple = true
+type = "string"

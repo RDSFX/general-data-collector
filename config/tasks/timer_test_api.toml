@@ -1,0 +1,15 @@
+# 验证配置：定时调度 API 请求
+
+name = "timer_test_api"
+template = "api_request"
+
+[timeouts]
+http_seconds = 10
+
+[request]
+method = "GET"
+base_url = "https://httpbin.org"
+path = "/json"
+
+[request.headers]
+Accept = "application/json"

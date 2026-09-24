@@ -1,0 +1,30 @@
+# 浏览器启动配置
+#
+# 修改此文件后需关闭使用该用户目录的浏览器，再重新运行 start-browser.bat
+# 启动脚本和采集进程共享此配置
+
+# Chrome 可执行文件路径
+executable = "C:/Program Files/Google/Chrome/Application/chrome.exe"
+
+# CDP 调试端口
+debug_port = 9222
+
+# 用户数据目录（相对项目根目录）
+user_data_dir = ".runtime/browser-profile"
+
+# 启动时打开的页面
+start_url = "about:blank"
+
+# 附加启动参数
+# 不要在此处重复设置 --remote-debugging-port 或 --user-data-dir
+args = [
+  "--no-first-run",
+  "--no-default-browser-check",
+  "--start-maximized",
+  # 可选参数（默认禁用，按需启用）：
+  # "--disable-gpu",
+  # "--no-sandbox",
+  # "--disable-background-timer-throttling",
+  # "--disable-renderer-backgrounding",
+  # "--disable-backgrounding-occluded-windows",
+]

@@ -1,0 +1,15 @@
+name = "verify_okx"
+template = "okx_api"
+
+[timeouts]
+http_seconds = 10
+
+[auth]
+api_key_env = "OKX_API_KEY"
+secret_key_env = "OKX_SECRET_KEY"
+passphrase_env = "OKX_PASSPHRASE"
+
+[request]
+method = "GET"
+base_url = "https://www.okx.com"
+path = "/api/v5/account/balance"

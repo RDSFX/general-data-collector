@@ -1,0 +1,122 @@
+# 示例配置：浏览器页面采集
+
+# 任务名称（必填）
+name = "example_browser_page"
+
+# 模板名称（必填）
+template = "browser_page"
+
+# 超时配置（可选）
+[timeouts]
+navigation_seconds = 10    # 页面导航超时
+operation_seconds = 10     # 每个动作/操作的超时
+
+# 浏览器配置（必填）
+[browser]
+url = "https://httpbin.org/html"  # 目标页面 URL（测试用 HTML 页面）
+wait_for_login = false             # 是否等待人工登录确认
+
+# 动作序列（可选，按顺序执行）
+# 支持的动作类型：refresh, click, wait, fill, select, waitForSelector
+
+# 等待页面主体加载完成（example.com 的实际元素）
+[[actions]]
+type = "waitForSelector"
+selector = "div"      # example.com 有 div 元素
+
+# 等待固定时间（毫秒）
+[[actions]]
+type = "wait"
+duration = 500
+
+# 以下是其他动作类型的示例（已注释，因为 example.com 不包含这些元素）
+
+# 点击按钮示例
+# [[actions]]
+# type = "click"
+# selector = "button.load-more"
+
+# 填写表单示例
+# [[actions]]
+# type = "fill"
+# selector = "input[name='username']"
+# value = "example_user"
+
+# 选择下拉选项示例
+# [[actions]]
+# type = "select"
+# selector = "select#country"
+# value = "US"
+
+# 字段提取（必填，至少一个）
+# 每个字段通过 XPath 定位元素并提取内容
+
+# 提取页面标题
+[[fields]]
+name = "title"             # 字段名
+xpath = "//h1"             # XPath 表达式
+read = "text"              # 提取类型：text, html, attribute:<name>
+multiple = false           # 是否提取多个元素（true/false）
+type = "string"            # 值类型：string, number, boolean
+
+# 提取段落文本
+[[fields]]
+name = "paragraph"
+xpath = "//p"
+read = "text"
+multiple = false           # 只提取第一段
+type = "string"
+
+# 以下是其他字段类型的示例（已注释）
+
+# 提取多个元素示例
+# [[fields]]
+# name = "paragraphs"
+# xpath = "//p"
+# read = "text"
+# multiple = true            # 返回数组
+# type = "string"
+
+# 提取链接示例
+# [[fields]]
+# name = "link_url"
+# xpath = "//a"
+# read = "attribute:href"    # 提取 href 属性
+# multiple = false
+# type = "string"
+
+# 提取数值示例
+# [[fields]]
+# name = "count"
+# xpath = "//span[@class='count']"
+# read = "text"
+# multiple = false
+# type = "number"            # 自动转换为数值
+
+# 提取布尔值示例
+# [[fields]]
+# name = "is_active"
+# xpath = "//span[@class='status']"
+# read = "text"
+# multiple = false
+# type = "boolean"          # true/false/1/0/yes/no
+
+# 提取 HTML 内容示例
+# [[fields]]
+# name = "description"
+# xpath = "//div[@class='desc']"
+# read = "html"
+# multiple = false
+# type = "string"
+
+# 使用说明：
+# 1. 启动浏览器：.\start-browser.bat
+# 2. 单次执行：python executor.py config/tasks/example_browser_page.toml
+# 3. 定时调度：python timer.py config/tasks/example_browser_page.toml
+# 4. 调试 XPath：在浏览器 DevTools Console 执行 $x("your_xpath")
+
+# 注意事项：
+# - 动作使用 CSS 选择器（Playwright 语法）
+# - 字段提取使用 XPath 表达式
+# - XPath 必须匹配到至少一个元素，否则报错
+# - multiple=true 时返回数组，multiple=false 时返回第一个元素
