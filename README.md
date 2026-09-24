@@ -14,25 +14,9 @@
 
 ## 快速开始
 
-### 1. 环境准备
-
-```powershell
-# 克隆项目
-cd D:\Common\Programs\data-collector
-
-# 创建虚拟环境（如果尚未创建）
-python -m venv .venv
-
-# 激活虚拟环境
-.venv\Scripts\Activate.ps1
-
-# 安装依赖
-pip install -r requirements.txt
-```
-
 详见 [ENV.md](ENV.md) 了解完整的环境配置步骤。
 
-### 2. API 采集示例
+### API 采集示例
 
 创建配置文件 `config/tasks/my_api.toml`：
 
@@ -70,7 +54,7 @@ interval_seconds = 60  # 每 60 秒采集一次
 
 采集结果保存在 `data/my_api/<日期>.jsonl`。
 
-### 3. 浏览器采集示例
+### 浏览器采集示例
 
 **启动浏览器**：
 ```powershell

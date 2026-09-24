@@ -2,69 +2,40 @@
 
 本文档说明如何配置和准备 data-collector 的运行环境。
 
-## 系统要求
+## 运行需求
 
-- **操作系统**：Windows 10/11（已测试）或 Linux（部分功能受限）
-- **Python**：3.10 或 3.11（推荐 3.11.5）
+- **Python**：3.11.5
 - **浏览器**：Google Chrome（用于浏览器采集）
 
 ## 环境准备步骤
 
-### 1. Python 环境
+### 虚拟环境
 
-确认 Python 版本：
+**创建并激活虚拟环境**：
 ```powershell
-python --version
-# 应显示 Python 3.10.x 或 3.11.x
-```
-
-如果未安装 Python，从 [python.org](https://www.python.org/downloads/) 下载并安装。
-
-### 2. 虚拟环境
-
-**创建虚拟环境**：
-```powershell
-cd D:\Common\Programs\data-collector
+# Powershell
 python -m venv .venv
+.venv\Scripts\activate
 ```
 
-**激活虚拟环境**：
-```powershell
-# PowerShell
-.venv\Scripts\Activate.ps1
-
-# 如果遇到执行策略错误，运行：
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
 
 **验证激活**：
 ```powershell
 # 命令提示符前应显示 (.venv)
 ```
 
-### 3. 安装依赖
+### 安装依赖
 
 ```powershell
 pip install -r requirements.txt
 ```
 
 **依赖包说明**：
-- `requests==2.31.0`：HTTP 请求库（API 模板）
-- `playwright==1.40.0`：浏览器自动化库（浏览器模板）
-- `tomli==2.0.1`：TOML 解析库（Python 3.10 兼容）
+- `requests`：HTTP 请求库（API 模板）
+- `playwright`：浏览器自动化库（浏览器模板）
+- `tomli`：TOML 解析库
 
-### 4. 浏览器配置（浏览器采集必需）
-
-#### 安装 Chrome
-
-如果尚未安装 Chrome，从 [google.com/chrome](https://www.google.com/chrome/) 下载并安装。
-
-默认安装路径：
-```
-C:\Program Files\Google\Chrome\Application\chrome.exe
-```
-
-#### 配置浏览器启动参数
+### 配置浏览器启动参数
 
 编辑 `config/browser.toml`：
 
@@ -94,7 +65,7 @@ args = [
 - 不要在 `args` 中重复设置 `--remote-debugging-port` 或 `--user-data-dir`
 - `user_data_dir` 用于隔离浏览器配置文件，避免与日常使用的 Chrome 冲突
 
-#### 启动浏览器
+### 启动浏览器
 
 ```powershell
 .\start-browser.bat
@@ -108,55 +79,8 @@ args = [
 - 如果端口已被占用，修改 `config/browser.toml` 中的 `debug_port`
 - 如果路径错误，检查 `executable` 配置是否正确
 
-### 5. 环境变量（可选）
 
-某些功能需要环境变量配置，例如 OKX API 认证。
-
-#### Windows PowerShell
-
-**临时设置**（当前会话有效）：
-```powershell
-$env:OKX_API_KEY="your_api_key"
-$env:OKX_SECRET_KEY="your_secret_key"
-$env:OKX_PASSPHRASE="your_passphrase"
-```
-
-**永久设置**（系统环境变量）：
-```powershell
-# 用户级别
-[System.Environment]::SetEnvironmentVariable("OKX_API_KEY", "your_api_key", "User")
-[System.Environment]::SetEnvironmentVariable("OKX_SECRET_KEY", "your_secret_key", "User")
-[System.Environment]::SetEnvironmentVariable("OKX_PASSPHRASE", "your_passphrase", "User")
-
-# 需要重新打开终端生效
-```
-
-#### Linux
-
-**临时设置**：
-```bash
-export OKX_API_KEY="your_api_key"
-export OKX_SECRET_KEY="your_secret_key"
-export OKX_PASSPHRASE="your_passphrase"
-```
-
-**永久设置**（添加到 `~/.bashrc` 或 `~/.zshrc`）：
-```bash
-echo 'export OKX_API_KEY="your_api_key"' >> ~/.bashrc
-echo 'export OKX_SECRET_KEY="your_secret_key"' >> ~/.bashrc
-echo 'export OKX_PASSPHRASE="your_passphrase"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### 6. 验证环境
-
-#### 验证 Python 依赖
-
-```powershell
-python -c "import requests, tomli; print('依赖正常')"
-```
-
-#### 验证浏览器连接（如果使用浏览器采集）
+### 验证浏览器连接
 
 1. 启动浏览器：
    ```powershell
@@ -177,7 +101,7 @@ python -c "import requests, tomli; print('依赖正常')"
    ✅ 初始化脚本存在
    ```
 
-#### 验证 API 采集
+### 验证 API 采集
 
 ```powershell
 python executor.py config/tasks/example_api.toml
@@ -238,7 +162,7 @@ A: 检查步骤：
 
 **Q: `Page is closed` 错误**
 
-A: 不要手动关闭调度器创建的 Tab，使用 `Ctrl+C` 优雅停止。
+A: 不要手动关闭调度器创建的 Tab，使用 `Ctrl+C` 停止。
 
 ### 配置相关
 
@@ -255,13 +179,6 @@ A: 配置文件路径和脚本路径：
 - 支持绝对路径
 - 相对路径基于项目根目录解析
 
-## 安全建议
-
-1. **不要在配置文件中直接写入敏感信息**（API 密钥、Token）
-2. **使用环境变量存储凭据**
-3. **不要提交包含敏感信息的配置文件到版本控制**
-4. **使用只读 API 密钥**（如果平台支持）
-5. **定期轮换密钥**
 
 ## 性能建议
 
